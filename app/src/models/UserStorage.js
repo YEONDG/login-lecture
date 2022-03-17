@@ -4,9 +4,9 @@ const fs = require("fs").promises;
 class UserStorage {
     static #getUserInfo(data, id){
         const users = JSON.parse(data);
-        const ids = users.id.indexOf(id);
+        const idx = users.id.indexOf(id);
         const usersKeys = Object.keys(users);
-        const userInfo = usersKeys.reduce((newUser, Info) => {
+        const userInfo = usersKeys.reduce((newUser, info) => {
             newUser[info] = users[info][idx];
             return newUser;
         }, {});
