@@ -1,14 +1,10 @@
 "use strict"
 
+const fs = require("fs").promises;
 class UserStorage {
-    static #users = {
-     id: ["zzmn", "zzmn1", "zzmn12"],
-     psword: ["1234", "1234", "12345"],
-     name: ["우리", "워리", "허리"],
-    };
 
     static getUsers(...fields){
-        const users =  this.#users;
+        // const users =  this.#users;
         const newUsers = fields.reduce((newUsers, field) => {
             if (users.hasOwnProperty(field)) {
                 newUsers[field] = users[field];
@@ -19,10 +15,19 @@ class UserStorage {
     }
 
     static getUserInfo(id){
-        const users = this.#users;
+        return fs
+          .readFile("./src/databases/users.json")
+          .then((data) => { 
+            return this.#getUserInfo(data, id);
+          })
+          .catch(console.error);
+        }
+       
+    static #getUserInfo(data, id){
+        const users = JSON.parse(data);
         const ids = users.id.indexOf(id);
         const usersKeys = Object.keys(users);
-        const userInfo = usersKeys.reduce((newUserm, Info) => {
+        const userInfo = usersKeys.reduce((newUser, Info) => {
             newUser[info] = users[info][idx];
             return newUser;
         }, {});
@@ -31,13 +36,13 @@ class UserStorage {
     }
 
     static save(userInfo) {
-        const users = this.#users;
+        // const users = this.#users;
         users.id.push(userInfo.id);
         users.name.push(userInfo.name);
         users.psword.push(userInfo.psword);
         return { success: true};
 
-    }
-}
+    };
 
+};
 module.exports = UserStorage;
